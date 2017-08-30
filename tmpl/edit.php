@@ -457,7 +457,7 @@ div.tab-content fieldset legend {
         <td colspan="2">
         <fieldset>
         <legend>Дополнительные шаблоны обработки:</legend>
-        <div style="overflow: auto; height: 400px;">
+        <div style="overflow: auto; height: 100%;">
             <style>
             .truser tr td, tr th {
                 padding: 3px;
