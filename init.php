@@ -17,16 +17,37 @@
   function checkTable(){
     global $wpdb;
     $table = $wpdb->prefix.'wpgrabber';
-      $check_table = $wpdb->get_results("SELECT count(protocol) FROM $table", ARRAY_N);
-      $prot = $check_table[0][0];
 
-      if ($prot <= 0){
-          WPGTools::git_admin_notice__error('Column not exist!');
-          $ct = $wpdb->query("ALTER TABLE $table ADD protocol TEXT NOT NULL");
-          if ($ct){
-              WPGTools::git_admin_notice__success('Ok. The table has been adjusted.');
-          } else {
-              WPGTools::git_admin_notice__error('Oops! Something went wrong...');
+      $check_all_tables = $wpdb->get_results("SELECT count(id) FROM $table", ARRAY_N);
+      $allt = $check_all_tables[0][0];
+
+      if ($allt <= 0) {
+          call_user_func(array(wpgPlugin(), 'load'));
+
+          $check_table = $wpdb->get_results("SELECT count(protocol) FROM $table", ARRAY_N);
+          $prot = $check_table[0][0];
+
+          if ($prot <= 0) {
+              WPGTools::git_admin_notice__error('Column not exist!');
+              $ct = $wpdb->query("ALTER TABLE $table ADD protocol TEXT NOT NULL");
+              if ($ct) {
+                  WPGTools::git_admin_notice__success('Ok. The table has been adjusted.');
+              } else {
+                  WPGTools::git_admin_notice__error('Oops! Something went wrong...');
+              }
+          }
+      } else {
+          $check_table = $wpdb->get_results("SELECT count(protocol) FROM $table", ARRAY_N);
+          $prot = $check_table[0][0];
+
+          if ($prot <= 0) {
+              WPGTools::git_admin_notice__error('Column not exist!');
+              $ct = $wpdb->query("ALTER TABLE $table ADD protocol TEXT NOT NULL");
+              if ($ct) {
+                  WPGTools::git_admin_notice__success('Ok. The table has been adjusted.');
+              } else {
+                  WPGTools::git_admin_notice__error('Oops! Something went wrong...');
+              }
           }
       }
   }
@@ -110,6 +131,6 @@
     require_once (WPGRABBER_PLUGIN_PRO_DIR.'TGrabberCorePro.php');
     require_once (WPGRABBER_PLUGIN_PRO_DIR.'TGrabberWordPressPro.php');
   }
-  call_user_func(array(wpgPlugin(), 'load'));
+  //call_user_func(array(wpgPlugin(), 'load'));
   call_user_func('checkTable');
 ?>
