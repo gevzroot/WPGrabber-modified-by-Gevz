@@ -18,10 +18,7 @@
     global $wpdb;
     $table = $wpdb->prefix.'wpgrabber';
 
-      $check_all_tables = $wpdb->get_results("SELECT count(id) FROM $table", ARRAY_N);
-      $allt = $check_all_tables[0][0];
-
-      if ($allt <= 0) {
+      if ($wpdb->get_var("SHOW TABLES LIKE '$table'") != $table) {
           call_user_func(array(wpgPlugin(), 'load'));
 
           $check_table = $wpdb->get_results("SELECT count(protocol) FROM $table", ARRAY_N);
