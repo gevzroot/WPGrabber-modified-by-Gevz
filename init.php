@@ -33,18 +33,20 @@
 
       //WPGTools::git_admin_notice__success(var_export($check_table));
 
-      foreach ($check_table->Field as $field) {
+      if($check_table) {
+          foreach ($check_table->Field as $field) {
 
-          if ($field === 'protocol') {
-              WPGTools::git_admin_notice__error('Column not exist!');
-              $ct = $wpdb->query("ALTER TABLE $table ADD protocol TEXT NOT NULL");
-              if ($ct) {
-                  WPGTools::git_admin_notice__success('Ok. The table has been adjusted.');
-              } else {
-                  WPGTools::git_admin_notice__error('Oops! Something went wrong...');
+              if ($field === 'protocol') {
+                  WPGTools::git_admin_notice__error('Column not exist!');
+                  $ct = $wpdb->query("ALTER TABLE $table ADD protocol TEXT NOT NULL");
+                  if ($ct) {
+                      WPGTools::git_admin_notice__success('Ok. The table has been adjusted.');
+                  } else {
+                      WPGTools::git_admin_notice__error('Oops! Something went wrong...');
+                  }
+
               }
           }
-
       }
   }
 
