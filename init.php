@@ -13,43 +13,6 @@
     session_start();
   }
 
-  //g
-  function check_installation(){
-      global $wpdb;
-      $table = $wpdb->prefix.'wpgrabber';
-
-      if ($wpdb->get_var("SHOW TABLES LIKE '$table'") != $table) {
-          call_user_func('checkTable');
-      }
-
-      call_user_func(array(wpgPlugin(), 'load'));
-  }
-
-  function checkTable(){
-    global $wpdb;
-    $table = $wpdb->prefix.'wpgrabber';
-
-      $check_table = $wpdb->get_results("DESCRIBE $table");
-
-      //WPGTools::git_admin_notice__success(var_export($check_table));
-
-      if($check_table) {
-          foreach ($check_table->Field as $field) {
-
-              if ($field === 'protocol') {
-                  WPGTools::git_admin_notice__error('Column not exist!');
-                  $ct = $wpdb->query("ALTER TABLE $table ADD protocol TEXT NOT NULL");
-                  if ($ct) {
-                      WPGTools::git_admin_notice__success('Ok. The table has been adjusted.');
-                  } else {
-                      WPGTools::git_admin_notice__error('Oops! Something went wrong...');
-                  }
-
-              }
-          }
-      }
-  }
-
   function wpgIsDemo() {
     return ($_SERVER['HTTP_HOST'] == 'demo.wpgrabber.ru');
   }
@@ -129,6 +92,5 @@
     require_once (WPGRABBER_PLUGIN_PRO_DIR.'TGrabberCorePro.php');
     require_once (WPGRABBER_PLUGIN_PRO_DIR.'TGrabberWordPressPro.php');
   }
-  //call_user_func(array(wpgPlugin(), 'load'));
-  call_user_func('check_installation');
+  call_user_func(array(wpgPlugin(), 'load'));
 ?>
