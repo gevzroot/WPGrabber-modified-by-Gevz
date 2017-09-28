@@ -348,6 +348,7 @@
 		  $row['params']['postType'] = 0;
 		  $row['params']['catid'] = '';
 		  $row['params']['titleUniqueOn'] = 1;
+		  $row['params']['meta_pic'] = 0;
 		  $row['protocol'] = ''; //g
 		  $row['url'] = '';
 		  $row['name'] = '';
@@ -763,7 +764,7 @@
       $rows = array_map('intval', $_REQUEST['rows']);
       $sql = 'SELECT `name`, `type`, `url`, `links`, `title`, `text_start`,
           `text_end`, `rss_encoding`, `html_encoding`, `published`,
-          `params`, `interval`
+          `params`, `interval`, `protocol`
         FROM `'.$wpdb->prefix.'wpgrabber`
         WHERE id IN ('.implode(',', $rows).')';
       $rows = $wpdb->get_results($sql, 'ARRAY_A');
@@ -811,7 +812,7 @@
       $rows = array_map('intval', $_POST['rows']);
       $sql = 'SELECT `name`, `type`, `url`, `links`, `title`,
           `text_start`, `text_end`, `rss_encoding`, `html_encoding`,
-          `published`, `params`, `interval`
+          `published`, `params`, `interval`, `protocol`
         FROM `'.$wpdb->prefix.'wpgrabber`
         WHERE id IN ('.implode(',', $rows).')';
       $rows = $wpdb->get_results($sql, ARRAY_A);

@@ -243,7 +243,7 @@ div.tab-content fieldset legend {
             <td>Вырезать первую картинку в начало записи</td><td><?php echo WPGHelper::yesNoRadioList('params[intro_pic_on]', $row['params']['intro_pic_on']); ?></td>
         </tr>
         <tr>
-            <td>Использовать мета-картинку</td><td><?php echo WPGHelper::yesNoRadioList('params[meta_pic]', $row['params']['meta_pic']); ?></td>
+            <td>Использовать мета-картинку</td><td><?php echo WPGHelper::yesNoRadioList('params[meta_pic]', $row['params']['meta_pic']); ?> -- not working yet</td>
         </tr>
     </table>
     <fieldset>

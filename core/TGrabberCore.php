@@ -1023,6 +1023,9 @@ class TGrabberCore
         // Обработка изображений
         $this->_echo('<br /><b>Обработка изображений в тексте:</b>');
         $this->introPicOn = 1;
+
+        // g -- META picture
+
         if (!$this->testOn and $this->feed['params']['image_save']) $this->mkImageDir();
         $record['text'] = $this->imageProcessor($record['text']); 
         
