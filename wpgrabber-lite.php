@@ -4,7 +4,7 @@
 Plugin Name: WPGrabber by gIT
 Plugin URI: https://github.com/gevzroot/WPGrabber-modified-by-Gevz.git
 Description: WordPess Grabber plugin
-Version: 3.1.4 #018
+Version: 3.1.5 #019
 Author: Gevz
 Author URI:
 */
