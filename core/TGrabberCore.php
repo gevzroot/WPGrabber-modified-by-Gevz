@@ -580,6 +580,16 @@ class TGrabberCore
       } else {
           $this->_echo('<br /><a target="_blank" href="' . $link . '">' . $link . '</a>');
           $page = $this->getContent($link);
+          $thumb_pic = '';
+
+          // g -- get meta picture
+          if ($this->feed['params']['meta_pic']){
+              preg_match('<meta property="og:image" content="(.*?)">', $page, $meta_pic, PREG_OFFSET_CAPTURE);
+              file_put_contents(ABSPATH.'MATCHES.TXT', var_export($meta_pic, true)); //g
+              $thumb_pic = $meta_pic[1][0];
+              $this->content[$link]['thumbnail'] = '<img src="'.$thumb_pic.'">';
+          }
+
           $page = $this->userReplace('page', $page);
           $this->content[$link]['location'] = $this->currentUrl;
           $page = $this->utf($page, $this->feed['html_encoding']);
@@ -1021,16 +1031,20 @@ class TGrabberCore
         }
         
         // Обработка изображений
-        $this->_echo('<br /><b>Обработка изображений в тексте:</b>');
+        $this->_echo('<br /><b>Обработка изображений в тексте:</b><br>');
         $this->introPicOn = 1;
 
+        if ($this->feed['params']['meta_pic']) {
+            $this->picToIntro = $this->imageProcessor($record['thumbnail']);
+            $this->_echo('META PIC: ' . $this->picToIntro);
+        }
         // g -- META picture
 
         if (!$this->testOn and $this->feed['params']['image_save']) $this->mkImageDir();
         $record['text'] = $this->imageProcessor($record['text']); 
         
         if ($this->imagesContentNoSave) {
-            $this->_echo("<br>Материл <strong>НЕ</strong> будет сохранен по причине отсутсвия в нем картинок! (см. опцию: Не сохранять материал без картинок)");
+            $this->_echo("<br>Материал <strong>НЕ</strong> будет сохранен по причине отсутсвия в нем картинок! (см. опцию: Не сохранять материал без картинок)");
             return null;
         }
 
@@ -1039,7 +1053,7 @@ class TGrabberCore
         $this->_pluginSynonymize($record);
 
         if (empty($record['text'])) {
-          $this->_echo('<br /><i>Материл <strong>НЕ</strong> будет сохранен по причине отсутствия в нем контента</i>');
+          $this->_echo('<br /><i>Материал <strong>НЕ</strong> будет сохранен по причине отсутствия в нем контента</i>');
           return null;
         }
         return true;

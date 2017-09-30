@@ -198,6 +198,10 @@ class TGrabberWordPress extends TGrabberCore
         }
         $record =& $this->content[$url];
 
+        if ($this->content[$url]['thumbnail']) {
+            $this->picToIntro = $record['thumbnail'];
+        }
+
         $created = current_time('mysql');
         
         if ($this->feed['params']['autoIntroOn'] == 1) {
@@ -286,6 +290,7 @@ class TGrabberWordPress extends TGrabberCore
         if ($postID) {
           if($this->saveContentRecord($postID, $url)) {
             $this->_echo("<br>Запись с заголовком: <b>{$record['title']}</b> - успешно сохранена!");
+              $this->_echo('META PIC: '.$this->picToIntro);
             $this->saveAttachments($postID);
             wp_set_current_user($current_user_id);
             return true;
