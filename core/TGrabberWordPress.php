@@ -259,7 +259,7 @@ class TGrabberWordPress extends TGrabberCore
         }
 
         if($this->feed['params']['intopost']){
-            $record['text'] = $this->picToIntro . $record['text'];
+            $record['text'] = $this->picToIntro .'<br>'. $record['text'];
         }
 
         $post = array(
