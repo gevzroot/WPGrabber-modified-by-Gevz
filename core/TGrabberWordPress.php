@@ -258,6 +258,10 @@ class TGrabberWordPress extends TGrabberCore
             }
         }
 
+        if($this->feed['params']['intopost']){
+            $record['text'] = $this->picToIntro . $record['text'];
+        }
+
         $post = array(
             //'ID'             => [ <post id> ] //Are you updating an existing post?
             //'menu_order'     => [ <order> ] //If new post is a page, it sets the order in which it should appear in the tabs.

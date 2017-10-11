@@ -349,6 +349,7 @@
 		  $row['params']['catid'] = '';
 		  $row['params']['titleUniqueOn'] = 1;
 		  $row['params']['meta_pic'] = 0;
+		  $row['params']['intopost'] = 0;
 		  $row['protocol'] = ''; //g
 		  $row['url'] = '';
 		  $row['name'] = '';
