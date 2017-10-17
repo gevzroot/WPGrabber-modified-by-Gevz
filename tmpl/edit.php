@@ -248,6 +248,12 @@ div.tab-content fieldset legend {
         <tr>
             <td>Вклеить мета-картинку в пост</td><td><?php echo WPGHelper::yesNoRadioList('params[intopost]', $row['params']['intopost']); ?><em>  ( Только если включена функция мета-картинки )</em></td>
         </tr>
+        <tr>
+            <td>Выравнивание мета-картинки</td><td><?php echo WPGHelper::selectList('params[align]', array('left','center','right'), $row['params']['align']);?></td>
+        </tr>
+        <tr>
+            <td>Размер мета-картинки</td><td><?php echo WPGHelper::selectList('params[dimension]', array('thumbnail','medium','large','full'), $row['params']['dimension']);?></td>
+        </tr>
     </table>
     <fieldset>
     <legend>Настройки сохранения картинок на сервере</legend>

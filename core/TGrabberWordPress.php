@@ -235,6 +235,10 @@ class TGrabberWordPress extends TGrabberCore
           $this->_echo('<br /><i>Материaл не сохранен по причине отсутствия заголовка</i>');
           return null;
         }
+
+        if($this->feed['params']['intopost']){
+            $record['text'] = $this->picToIntro .'<br>'. $record['text'];
+        }
         
         // если тестовый режим   
         if ($this->testOn) {
@@ -256,10 +260,6 @@ class TGrabberWordPress extends TGrabberCore
             if (!$this->feed['params']['aliasMethod']) {
                 $postAlias = $this->getAlias($record['title'], $created);
             }
-        }
-
-        if($this->feed['params']['intopost']){
-            $record['text'] = $this->picToIntro .'<br>'. $record['text'];
         }
 
         $post = array(
@@ -294,7 +294,7 @@ class TGrabberWordPress extends TGrabberCore
         if ($postID) {
           if($this->saveContentRecord($postID, $url)) {
             $this->_echo("<br>Запись с заголовком: <b>{$record['title']}</b> - успешно сохранена!");
-              $this->_echo('META PIC: '.$this->picToIntro);
+            $this->_echo('META PIC: '.$this->picToIntro);
             $this->saveAttachments($postID);
             wp_set_current_user($current_user_id);
             return true;

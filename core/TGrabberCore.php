@@ -587,7 +587,38 @@ class TGrabberCore
               preg_match('<meta property="og:image" content="(.*?)">', $page, $meta_pic, PREG_OFFSET_CAPTURE);
               file_put_contents(ABSPATH.'MATCHES.TXT', var_export($meta_pic, true)); //g
               $thumb_pic = $meta_pic[1][0];
-              $this->content[$link]['thumbnail'] = '<img src="'.$thumb_pic.'">';
+
+              if ($this->feed['params']['align']){
+                  switch ($this->feed['params']['align']){
+                      case 'left':
+                          $meta_pic_class = 'alignleft';
+                          break;
+                      case 'center':
+                          $meta_pic_class = 'aligncenter';
+                          break;
+                      case 'right':
+                          $meta_pic_class = 'alignright';
+                  }
+              }
+
+              if ($this->feed['params']['dimension']){
+                  switch ($this->feed['params']['dimension']){
+                      case 'thumbnail':
+                          $meta_pic_dim = '15%';
+                          break;
+                      case 'medium':
+                          $meta_pic_dim = '30%';
+                          break;
+                      case 'large':
+                          $meta_pic_dim = '50%';
+                          break;
+                      case 'full':
+                          $meta_pic_dim = '100%';
+                          break;
+                  }
+              }
+
+              $this->content[$link]['thumbnail'] = '<img src="'.$thumb_pic.'" class="'.$meta_pic_class.'" width="'.$meta_pic_dim.'">';
           }
 
           $page = $this->userReplace('page', $page);
