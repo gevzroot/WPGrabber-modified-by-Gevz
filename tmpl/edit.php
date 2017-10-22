@@ -246,6 +246,9 @@ div.tab-content fieldset legend {
             <td>Использовать мета-картинку</td><td><?php echo WPGHelper::yesNoRadioList('params[meta_pic]', $row['params']['meta_pic']); ?></td>
         </tr>
         <tr>
+            <td>Шаблон мета-картинки</td><td><input type="text" name="params[meta_pic_source]" value="<?php echo htmlentities($row['params']['meta_pic_source'], ENT_COMPAT, 'UTF-8'); ?>" size="100"></td>
+        </tr>
+        <tr>
             <td>Вклеить мета-картинку в пост</td><td><?php echo WPGHelper::yesNoRadioList('params[intopost]', $row['params']['intopost']); ?><em>  ( Только если включена функция мета-картинки )</em></td>
         </tr>
         <tr>

@@ -581,11 +581,16 @@ class TGrabberCore
           $this->_echo('<br /><a target="_blank" href="' . $link . '">' . $link . '</a>');
           $page = $this->getContent($link);
           $thumb_pic = '';
+          $pattern = $this->feed['params']['meta_pic_source'];
+
+          if(!$pattern) {
+              $pattern = '<meta property="og:image" content="(.*?)"';
+          }
 
           // g -- get meta picture
           if ($this->feed['params']['meta_pic']){
-              preg_match('<meta property="og:image" content="(.*?)">', $page, $meta_pic, PREG_OFFSET_CAPTURE);
-              file_put_contents(ABSPATH.'MATCHES.TXT', var_export($meta_pic, true)); //g
+              preg_match('~' . $pattern . '~is', $page, $meta_pic, PREG_OFFSET_CAPTURE);
+              file_put_contents(ABSPATH.'MATCHES.TXT', var_export(array($meta_pic, $pattern), true)); //g
               $thumb_pic = $meta_pic[1][0];
 
               if ($this->feed['params']['align']){
@@ -1067,7 +1072,8 @@ class TGrabberCore
 
         if ($this->feed['params']['meta_pic']) {
             $this->picToIntro = $this->imageProcessor($record['thumbnail']);
-            $this->_echo('META PIC: <div style="width: 20%;">' . $this->picToIntro . '</div>');
+            $this->_echo('<br>META PIC: <div style="width: 20%;">' . $this->picToIntro . '</div>');
+            $this->_echo("<br>META PIC SOURCE: " . htmlentities($this->feed['params']['meta_pic_source']) . '<br>');
         }
         // g -- META picture
 
