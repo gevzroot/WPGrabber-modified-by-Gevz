@@ -1073,7 +1073,6 @@ class TGrabberCore
         if ($this->feed['params']['meta_pic']) {
             $this->picToIntro = $this->imageProcessor($record['thumbnail']);
             $this->_echo('<br>META PIC: <div style="width: 20%;">' . $this->picToIntro . '</div>');
-            $this->_echo("<br>META PIC SOURCE: " . htmlentities($this->feed['params']['meta_pic_source']) . '<br>');
         }
         // g -- META picture
 
