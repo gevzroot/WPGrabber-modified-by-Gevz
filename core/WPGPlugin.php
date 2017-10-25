@@ -348,8 +348,9 @@
 		  $row['params']['postType'] = 0;
 		  $row['params']['catid'] = '';
 		  $row['params']['titleUniqueOn'] = 1;
+		  $row['params']['pic_source'] = 'src';
 		  $row['params']['meta_pic'] = 0;
-		  $row['params']['meta_pic_source'] = '<meta property="og:image" content="(.*?)"';
+		  $row['params']['meta_pic_source'] = '<meta property="og:image" content="(.*?)">';
 		  $row['params']['intopost'] = 0;
 		  $row['protocol'] = ''; //g
 		  $row['url'] = '';

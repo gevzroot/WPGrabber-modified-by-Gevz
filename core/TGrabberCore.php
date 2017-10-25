@@ -917,11 +917,16 @@ class TGrabberCore
     function imageProcessor($text)
     {
         $this->images = array();
+        if($this->feed['params']['pic_source']){
+            $pic_source_template = $this->feed['params']['pic_source'];
+        } else {
+            $pic_source_template = 'src';
+        }
         // если включена обработка пробелов в путях картинок
         if ($this->feed['params']['image_space_on']) {
-            $text = preg_replace_callback('|<img(.*?)src(.*?)=[\s\'\"]*(.*?)[\'\"](.*?)>|is', array(&$this, 'imageParser'), $text);
+            $text = preg_replace_callback('|<img(.*?)'.$pic_source_template.'(.*?)=[\s\'\"]*(.*?)[\'\"](.*?)>|is', array(&$this, 'imageParser'), $text);
         } else {
-            $text = preg_replace_callback('|<img(.*?)src(.*?)=[\s\'\"]*(.*?)[\'\"\s](.*?)>|is', array(&$this, 'imageParser'), $text);
+            $text = preg_replace_callback('|<img(.*?)'.$pic_source_template.'(.*?)=[\s\'\"]*(.*?)[\'\"\s](.*?)>|is', array(&$this, 'imageParser'), $text);
         }
         return $text;
     }
