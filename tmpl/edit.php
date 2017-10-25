@@ -18,7 +18,10 @@ div.tab-content fieldset {
 }
 div.tab-content fieldset legend {
     font-weight: bold;
-}    
+}
+.tips {
+    padding: 0 2%;
+}
 </style>
 <?php $isNew=''; ?>
 <div class="wrap">
@@ -243,7 +246,9 @@ div.tab-content fieldset legend {
             <td>Вырезать первую картинку в начало записи</td><td><?php echo WPGHelper::yesNoRadioList('params[intro_pic_on]', $row['params']['intro_pic_on']); ?></td>
         </tr>
         <tr>
-            <td>Шаблон источника картинки</td><td><input type="text" name="params[pic_source]" value="<?php echo htmlentities($row['params']['pic_source'], ENT_COMPAT, 'UTF-8'); ?>" size="100"></td>
+            <td>Шаблон источника картинки</td><td><input type="text" name="params[pic_source]" value="<?php echo htmlentities($row['params']['pic_source'], ENT_COMPAT, 'UTF-8'); ?>" size="100">
+                <br><em class="tips">( if you have several attributes of the image source, just enter one of them here. )</em>
+            </td>
         </tr>
         <tr>
             <td>Использовать мета-картинку</td><td><?php echo WPGHelper::yesNoRadioList('params[meta_pic]', $row['params']['meta_pic']); ?></td>
@@ -252,7 +257,7 @@ div.tab-content fieldset legend {
             <td>Шаблон мета-картинки</td><td><input type="text" name="params[meta_pic_source]" value="<?php echo htmlentities($row['params']['meta_pic_source'], ENT_COMPAT, 'UTF-8'); ?>" size="100"></td>
         </tr>
         <tr>
-            <td>Вклеить мета-картинку в пост</td><td><?php echo WPGHelper::yesNoRadioList('params[intopost]', $row['params']['intopost']); ?><em>  ( Только если включена функция мета-картинки )</em></td>
+            <td>Вклеить мета-картинку в пост</td><td><?php echo WPGHelper::yesNoRadioList('params[intopost]', $row['params']['intopost']); ?><em class="tips">( Только если включена функция мета-картинки )</em></td>
         </tr>
         <tr>
             <td>Выравнивание мета-картинки</td><td><?php echo WPGHelper::selectList('params[align]', array('left','center','right'), $row['params']['align']);?></td>
