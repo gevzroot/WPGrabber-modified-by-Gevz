@@ -1,29 +1,51 @@
 <style>
-.button-panel {padding-top: 30px; padding-left: 10px; border-top: 1px solid #cacaca; margin-top: 30px;}
-.button-panel p.submit {float: left; margin-right: 10px; padding:0px;margin:0px; margin-right: 10px;}
-.button-panel input.button {margin-right: 10px; float: left; display: block;}
-div.tab-content {
-    display: none;
-    padding: 5px;
-    padding-top: 20px;
-}
-.tab-content-table tr td, .tab-content-table tr th {
-    padding-top: 3px;    
-    padding-bottom: 3px;    
-}
-div.tab-content fieldset {
-    padding: 10px;
-    border: 1px solid #cacaca;
-    margin-top: 15px;
-}
-div.tab-content fieldset legend {
-    font-weight: bold;
-}
-.tips {
-    padding: 0 2%;
-}
+    .button-panel {padding-top: 30px; padding-left: 10px; border-top: 1px solid #cacaca; margin-top: 30px;}
+    .button-panel p.submit {float: left; margin-right: 10px; padding:0px;margin:0px; margin-right: 10px;}
+    .button-panel input.button {margin-right: 10px; float: left; display: block;}
+    div.tab-content {
+        display: none;
+        padding: 5px;
+        padding-top: 20px;
+    }
+    .tab-content-table tr td, .tab-content-table tr th {
+        padding-top: 3px;
+        padding-bottom: 3px;
+    }
+    div.tab-content fieldset {
+        padding: 10px;
+        border: 1px solid #cacaca;
+        margin-top: 15px;
+    }
+    div.tab-content fieldset legend {
+        font-weight: bold;
+    }
+    .tips {
+        padding: 0 2%;
+    }
+    .add_tab_row {
+        cursor: pointer;
+        width: 6em;
+        background: #f7f7f7;
+        color: #555;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+        box-shadow: 0 1px 0 #ccc;
+        text-align: center;
+        padding: .5% 1.5%;
+        margin: 1% 1% 1% 0;
+    }
+    .add_tab_row:hover {
+        color: red;
+        border-color: #999;
+    }
+    .dbug {
+        width: 25%;
+        float: right;
+        outline: 1px solid black;
+        font-size: .7em;
+    }
+
 </style>
-<?php $isNew=''; ?>
 <div class="wrap">
 <form method="post" id="editForm" action="?page=wpgrabber-index&action=Save">
 <div id="icon-edit" class="icon32"></div><h2>WPGrabber - <?php echo $isNew ? 'Новая лента *' : 'Редактирование ленты'; ?> - 
@@ -48,6 +70,23 @@ div.tab-content fieldset legend {
             $(this).attr('class', 'nav-tab nav-tab-active');
             $('#tab-active').val($(this).attr('id').replace('tab', ''));
         });
+
+        jQuery('.add_tab_row').click(function(){
+            var prenum = jQuery('.row_num:last').text();
+            if (!prenum){
+                prenum = 0;
+            }
+            var num = parseInt(prenum)+1;
+            jQuery('.truser').append('<tr align="center">' +
+                '<td class="row_num">'+num+'</td>' +
+                '<td><select name="params[usrepl]['+num+'][type]" style="width:150px;"><option value="0" selected="selected">выключен</option><option value="index">индексная html-страница (rss-контент или vk-лента)</option><option value="page">страница контента до парсинга</option><option value="intro">анонс</option><option value="text">полный текст</option><option value="title">заголовок</option></select></td>' +
+                '<td><input size="30" type="text" name="params[usrepl]['+num+'][name]" value="" /></td>' +
+                '<td><input size="60" type="text" name="params[usrepl]['+num+'][search]" value="" /></td>' +
+                '<td><input size="50" type="text" name="params[usrepl]['+num+'][replace]" value="" /></td>' +
+                '<td><input style="text-align:center;" size="5" type="text" name="params[usrepl]['+num+'][limit]" value="" /></td>' +
+                '</tr>');
+        });
+
     });
     function __get(id) {
         return document.getElementById(id);    
@@ -109,7 +148,9 @@ div.tab-content fieldset legend {
             __get('proto').style.display='none';
         }
     }
+
 </script>
+
 <!--Основные-->
 <div class="tab-content" id="div_tab1"<?php echo $tab == 1 ? ' style="display: block;"' : ''; ?>>
     <table class="tab-content-table">
@@ -504,17 +545,28 @@ div.tab-content fieldset legend {
                 <th>Кол-во замен</th>
                 </tr>
                 <?php
-                for ($i=0; $i<30; $i++) { ?>
-                <tr align="center">
-                <td><?php echo ($i+1); ?></td>
-                <td><?php echo WPGHelper::selectList("params[usrepl][$i][type]", array('0' => 'выключен', 'index' => 'индексная html-страница (rss-контент или vk-лента)', 'page' => 'страница контента до парсинга', 'intro' => 'анонс', 'text' => 'полный текст', 'title' => 'заголовок'), $row['params']['usrepl'][$i]['type'], 1, 'style="width:150px;"'); ?></td>
-                <td><input size="30" type="text" name="params[usrepl][<?php echo $i; ?>][name]" value="<?php echo $row['params']['usrepl'][$i]['name']; ?>" /></td>
-                <td><input size="60" type="text" name="params[usrepl][<?php echo $i; ?>][search]" value="<?php echo htmlspecialchars($row['params']['usrepl'][$i]['search']); ?>" /></td>
-                <td><input size="50" type="text" name="params[usrepl][<?php echo $i; ?>][replace]" value="<?php echo htmlspecialchars($row['params']['usrepl'][$i]['replace']); ?>" /></td>
-                <td><input style="text-align:center;" size="5" type="text" name="params[usrepl][<?php echo $i; ?>][limit]" value="<?php echo $row['params']['usrepl'][$i]['limit']; ?>" /></td>
-                </tr>
-                <?php } ?>
+                $row_count = count($row['params']['usrepl']);
+                $c = 0;
+                foreach ($row['params']['usrepl'] as $unit){
+                    if($unit){
+                        if($unit['search'] != '') {
+                            ?>
+                            <tr align="center">
+                            <td class="row_num"><?php echo ($c+1); ?></td>
+                            <td><?php echo WPGHelper::selectList("params[usrepl][$c][type]", array('0' => 'выключен', 'index' => 'индексная html-страница (rss-контент или vk-лента)', 'page' => 'страница контента до парсинга', 'intro' => 'анонс', 'text' => 'полный текст', 'title' => 'заголовок'), $unit['type'], 1, 'style="width:150px;"'); ?></td>
+                            <td><input size="30" type="text" name="params[usrepl][<?php echo $c; ?>][name]" value="<?php echo $unit['name']; ?>" /></td>
+                            <td><input size="60" type="text" name="params[usrepl][<?php echo $c; ?>][search]" value="<?php echo htmlspecialchars($unit['search']); ?>" /></td>
+                            <td><input size="50" type="text" name="params[usrepl][<?php echo $c; ?>][replace]" value="<?php echo htmlspecialchars($unit['replace']); ?>" /></td>
+                            <td><input style="text-align:center;" size="5" type="text" name="params[usrepl][<?php echo $c; ?>][limit]" value="<?php echo $unit['limit']; ?>" /></td>
+                            </tr>
+                            <?php
+                            $c++;
+                        }
+                    }
+                }
+                ?>
             </table>
+            <div class="add_tab_row"><i class="fa fa-plus-square" aria-hidden="true"></i> Add row</div>
         </div>
         </fieldset>
         </td>

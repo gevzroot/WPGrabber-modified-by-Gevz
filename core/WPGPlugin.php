@@ -256,7 +256,7 @@
 
     public static function edit() {
       global $wpdb;
-	  $row['params'] = '';
+	  $row['params'] = array();
       $id = (int)WPGTools::getValue('id');
       if ($id) {
         $sql = 'SELECT * FROM `'.$wpdb->prefix.'wpgrabber`
@@ -270,7 +270,7 @@
         }
         $row['params'] = unserialize(base64_decode($row['params']));
         if (trim(@$row['params']['imageHtmlCode']) == '') {
-          $row['params']['imageHtmlCode'] = '<img src="%PATH%" />';
+          $row['params']['imageHtmlCode'] = '<img class="aligncenter" src="%PATH%" alt="%TITLE%" %ATTR% %ADDS% />';
         }
         if (!@$row['params']['metaDescSize']) {
           $row['params']['metaDescSize'] = '400';
@@ -301,7 +301,7 @@
         }
         $row['params'] = unserialize(base64_decode($row['params']));
         if (trim(@$row['params']['imageHtmlCode']) == '') {
-          $row['params']['imageHtmlCode'] = '<img src="%PATH%" />';
+          $row['params']['imageHtmlCode'] = '<img class="aligncenter" src="%PATH%" alt="%TITLE%" %ATTR% %ADDS% />';
         }
         if (!@$row['params']['metaDescSize']) {
           $row['params']['metaDescSize'] = '400';
@@ -331,16 +331,16 @@
 		  $row['params']['translate_lang'] = 0;
 		  $row['params']['translate_method'] = 0;
 		  $row['params']['translate_on'] = 0;
-		  $row['params']['nosave_if_not_translate'] = 1;
+		  $row['params']['nosave_if_not_translate'] = 0;
 		  $row['params']['img_intro_crop'] = '0';
 		  $row['params']['image_resize'] = 0;
 		  $row['params']['img_path_method'] = 0;
 		  $row['params']['post_thumb_on'] = 0;
 		  $row['params']['image_save'] = 0;
-		  $row['params']['no_save_without_pic'] = 0;
+		  $row['params']['no_save_without_pic'] = 1;
 		  $row['params']['aliasSize'] = '0';
 		  $row['params']['aliasMethod'] = 1;
-		  $row['params']['postSlugOn'] = 0;
+		  $row['params']['postSlugOn'] = 1;
 		  $row['params']['introSymbolEnd'] = '';
 		  $row['params']['post_more_on'] = 0;
 		  $row['params']['post_status'] = 0;
@@ -356,41 +356,41 @@
 		  $row['url'] = '';
 		  $row['name'] = '';
 		  $row['params']['start_link'] = '0';
-		 $row['params']['skip_error_urls'] = 0;
-		 $row['params']['start_top'] = 0;
-		 $row['title'] = '';
-		 $row['text_start'] = '';
-		 $row['text_end'] = '';
-		 $row['params']['introLinkTempl'] = '';
-		 $row['params']['orderLinkIntro'] = 0;
-        $row['published'] = 0;
-        $row['interval'] = 1800;
-        $row['params']['rss_textmod'] = '1';
-        $row['params']['max_items'] = 5;
-        $row['params']['intro_size'] = 500;
-        $row['params']['frontpage'] = 1;
-        $row['params']['dontPublished'] = 0;
-        $row['params']['intro_pic_on'] = 0;
-        $row['params']['image_path'] = get_option('wpg_imgPath') ? get_option('wpg_imgPath') : '/wp-content/uploads/';
-        $row['params']['image_space_on'] = 0;
-        $row['params']['intro_pic_width'] = 150;
-        $row['params']['intro_pic_height'] = 150;
-        $row['params']['intro_pic_quality'] = 100;
-        $row['params']['text_pic_width'] = 600;
-        $row['params']['text_pic_height'] = 600;
-        $row['params']['text_pic_quality'] = 100;
-        $row['params']['strip_tags'] = 1;
-        $row['params']['allowed_tags'] = '<img><b><i><u><object><embed><param><p><strong><br><ul><li><iframe>';
-        $row['params']['template_on'] = 1;
-        $row['params']['template_title'] = '%TITLE%';
-        $row['params']['template_intro_text'] = '%INTRO_TEXT%';
-        $row['params']['template_full_text'] = '%FULL_TEXT%';
-        $row['params']['imageHtmlCode'] = '<img src="%PATH%" %ATTR% />';
-        $row['params']['metaDescSize'] = '400';
-        $row['params']['metaKeysSize'] = '50';
-        $row['params']['title_words_count'] = '5';
-        $row['type'] = 'html';
-        $isNew = true;
+          $row['params']['skip_error_urls'] = 0;
+		  $row['params']['start_top'] = 0;
+		  $row['title'] = '';
+		  $row['text_start'] = '';
+		  $row['text_end'] = '';
+		  $row['params']['introLinkTempl'] = '';
+		  $row['params']['orderLinkIntro'] = 0;
+          $row['published'] = 0;
+          $row['interval'] = 1800;
+          $row['params']['rss_textmod'] = '1';
+          $row['params']['max_items'] = 5;
+          $row['params']['intro_size'] = 500;
+          $row['params']['frontpage'] = 1;
+          $row['params']['dontPublished'] = 0;
+          $row['params']['intro_pic_on'] = 1;
+          $row['params']['image_path'] = get_option('wpg_imgPath') ? get_option('wpg_imgPath') : '/wp-content/uploads/';
+          $row['params']['image_space_on'] = 0;
+          $row['params']['intro_pic_width'] = 150;
+          $row['params']['intro_pic_height'] = 150;
+          $row['params']['intro_pic_quality'] = 100;
+          $row['params']['text_pic_width'] = 600;
+          $row['params']['text_pic_height'] = 600;
+          $row['params']['text_pic_quality'] = 100;
+          $row['params']['strip_tags'] = 1;
+          $row['params']['allowed_tags'] = '<start><end><img><b><i><u><em><object><embed><param><p><strong><br><ol><ul><li><iframe><blockquote><video><source><center><table><tbody><thead><th><tr><td><h1><h2><h3><h4><h5><h6>';
+          $row['params']['template_on'] = 1;
+          $row['params']['template_title'] = '%TITLE%';
+          $row['params']['template_intro_text'] = '%INTRO_TEXT%';
+          $row['params']['template_full_text'] = '%FULL_TEXT%';
+          $row['params']['imageHtmlCode'] = '<img class="aligncenter" src="%PATH%" alt="%TITLE%" %ATTR% %ADDS% />';
+          $row['params']['metaDescSize'] = '400';
+          $row['params']['metaKeysSize'] = '50';
+          $row['params']['title_words_count'] = 5; //g
+          $row['type'] = 'html';
+          $isNew = true;
       }
       $tab = (isset($_REQUEST['tab']) and in_array($_REQUEST['tab'], array(1,2,3,4,6,7,8))) ? $_REQUEST['tab'] : 1;
       self::_header();
