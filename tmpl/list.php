@@ -18,7 +18,7 @@
 </style>
 <div class="wrap">
 <form method="post">
-<div id="icon-themes" class="icon32"></div><h2>WPGrabber - Список лент</h2>
+    <div id="icon-themes" class="icon32"></div><h2>WPGrabber - Список лент</h2>
 <?php $wpgrabberTable->search_box('поиск', 'search_id'); ?>
 <?php echo $wpgrabberTable->display(); ?>
 </form>

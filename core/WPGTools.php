@@ -60,4 +60,8 @@
     }
     //add_action( 'admin_notices', 'git_admin_notice__success' );
 
+    public function getModStatus() {
+        return get_option('wpg_creationMod');
+    }
+
   }

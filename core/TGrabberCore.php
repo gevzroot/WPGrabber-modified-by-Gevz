@@ -2,10 +2,10 @@
 /**
 * TGrabberCore
 *
-* @version 1.1
-* @author GrabTeam <gfk@mail.ru>
-* @copyright 2009-2016 GrabTeam (closed)
-* @link http://wpgrabber.biz
+* @version 2.0
+* @author Gevz-IT
+* @copyright 2009-2017 Gevz-IT
+* @link http://gevz-it.com
 */
 
 class TGrabberCore
@@ -590,7 +590,10 @@ class TGrabberCore
           // g -- get meta picture
           if ($this->feed['params']['meta_pic']){
               preg_match('~' . $pattern . '~is', $page, $meta_pic, PREG_OFFSET_CAPTURE);
-              file_put_contents(ABSPATH.'MATCHES.TXT', var_export(array($meta_pic, $pattern), true)); //g
+              $mod_status = WPGTools::getModStatus();
+              if ($mod_status == 1) {
+                  file_put_contents(ABSPATH.'MATCHES.TXT', var_export(array($meta_pic, $pattern), true));
+              }
               $thumb_pic = $meta_pic[1][0];
 
               if ($this->feed['params']['align']){
@@ -976,8 +979,10 @@ class TGrabberCore
     function save($url)
     {
         $record =& $this->content[$url];
-        file_put_contents(ABSPATH.'INPUT_CONTENT.TXT', var_export($record, true)); //g
-        
+        $mod_status = WPGTools::getModStatus();
+        if ($mod_status == 1) {
+            file_put_contents(ABSPATH . 'INPUT_CONTENT.TXT', var_export($record, true)); //g
+        }
         // если определение анонса в ручную:
         if ($this->feed['params']['autoIntroOn'] == 1) {
             $this->introTexts[$url] = $this->userReplace('intro', $this->introTexts[$url]);

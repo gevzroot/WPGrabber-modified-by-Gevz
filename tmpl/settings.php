@@ -47,7 +47,7 @@ div.tab-content fieldset legend {
 <div class="wrap">
 <form method="post">
 <div id="icon-options-general" class="icon32"></div><h2>WPGrabber - Настройки - 
-    <a href="http://support.wpgrabber.biz/" target="_blank" title="Заказать платную настройку лент"><b>Заказать настройку ленты</b></a></h2>
+    <a href="mailto:germanov.vitaly@gmail.com" target="_blank" title="Заказать платную настройку лент"><b>Заказать настройку ленты</b></a></h2>
 <h2 class="nav-tab-wrapper">
     <a href="#tab1" id="tab1" class="nav-tab<?php echo $tab == 1 ? ' nav-tab-active' : ''; ?>">Основные</a>
     <a href="#tab2" id="tab2" class="nav-tab<?php echo $tab == 3 ? ' nav-tab-active' : ''; ?>">Картинки</a>
@@ -181,6 +181,16 @@ div.tab-content fieldset legend {
 
 <!-- Дополнительно -->
 <div class="tab-content" id="div_tab5"<?php echo $tab == 5 ? ' style="display: block;"' : ''; ?>>
+    <fieldset>
+        <legend>Creation mode</legend>
+        <table class="tab-content-table">
+            <tr>
+                <td width="395">Включить</td>
+                <td><?php echo WPGHelper::yesNoRadioList('options[creationMod]', get_option('wpg_' .'creationMod')); ?></td>
+            </tr>
+        </table>
+    </fieldset>
+
     <fieldset>
         <legend>Логирование ошибок плагина</legend>
         <table class="tab-content-table">

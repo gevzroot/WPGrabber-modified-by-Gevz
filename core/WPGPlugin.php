@@ -251,7 +251,7 @@
 
     protected static function _footer() {
       echo '<div style="text-align: left; padding-top: 20px; margin-top: 30px; font-size: 16px;">&copy 2013-'.date('Y').' WPGrabber '.
-        WPGRABBER_VERSION.' - Служба Поддержки <a target="_blank" href="http://support.wpgrabber.biz/">WPGrabber</a>.</div>';
+        WPGRABBER_VERSION.' - Служба Поддержки <a target="_blank" href="http://gevz-it.com/">WPGrabber</a>.</div>';
     }
 
     public static function edit() {
@@ -655,7 +655,10 @@
 
       $params = WPGHelper::strips($params);
 
-      file_put_contents(ABSPATH.'PARAMS.TXT', var_export($params, true));
+      $mod_status = WPGTools::getModStatus();
+      if ($mod_status == 1) {
+          file_put_contents(ABSPATH . 'PARAMS.TXT', var_export($params, true));
+      }
 
       $row = WPGHelper::strips($row);
 

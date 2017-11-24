@@ -104,3 +104,20 @@
   <div id="ajax-log"></div>
   <div id="ajax-loader"><img src="<?php echo WPGRABBER_PLUGIN_URL; ?>images/ajax-loader.gif" /></div>
 </div>
+<?php
+$option = WPGTools::getModStatus(); //get_option('wpg_creationMod');
+
+if ( $option == 1) {
+    $status = 'Creation Mode';
+    $color  = 'white';
+    $back   = 'red';
+    $out    = '<div class="creation-mod" style="background: '.$back.'; color: '.$color.'; width: 95%; display: block; padding: .5% 2%; text-align: center; font-size: 1.5em; font-weight: bold;">'.$status.'</div>';
+    echo $out;
+} elseif($option == 0) {
+    unlink(ABSPATH.'MATCHES.TXT');
+    unlink(ABSPATH.'INPUT_CONTENT.TXT');
+    unlink(ABSPATH.'INPUT_CONTENT_2.TXT');
+    unlink(ABSPATH.'PARAMS.TXT');
+}
+?>
+
