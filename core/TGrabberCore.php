@@ -589,14 +589,26 @@ class TGrabberCore
 
           // g -- get meta picture
           if ($this->feed['params']['meta_pic']){
+              $meta_pic_class   = '';
+              $meta_pic_dim     = '';
+
               preg_match('~' . $pattern . '~is', $page, $meta_pic, PREG_OFFSET_CAPTURE);
+
+              $thumb_pic = $meta_pic[1][0];
+              $pos = strpos($thumb_pic, '?');
+
+              if ($pos) {
+                  $thumb_pic = substr($thumb_pic, 0, $pos);
+              }
+
               $mod_status = WPGTools::getModStatus();
               if ($mod_status == 1) {
-                  file_put_contents(ABSPATH.'MATCHES.TXT', var_export(array($meta_pic, $pattern), true));
+                  file_put_contents(ABSPATH.'MATCHES.TXT', var_export(array($meta_pic, $pattern, $thumb_pic), true));
               }
-              $thumb_pic = $meta_pic[1][0];
 
               if ($this->feed['params']['align']){
+                  $this->imagesContentNoSave = false;
+
                   switch ($this->feed['params']['align']){
                       case 'left':
                           $meta_pic_class = 'alignleft';
@@ -626,10 +638,16 @@ class TGrabberCore
                   }
               }
 
-              $this->content[$link]['thumbnail'] = '<img src="'.$thumb_pic.'" class="'.$meta_pic_class.'" width="'.$meta_pic_dim.'">';
+              $attr = 'class="'.$meta_pic_class.'"';
+              $adds = 'width="'.$meta_pic_dim.'"';
+              $mPic = '<img '.$this->feed['params']['pic_source'].'="'.$thumb_pic.'" '.$attr.' '.$adds.' />';
+
+              $this->content[$link]['thumbnail'] = $this->imageProcessor($mPic);
+              $this->content[$link]['thumb_path'] = $thumb_pic;
           }
 
           $page = $this->userReplace('page', $page);
+
           $this->content[$link]['location'] = $this->currentUrl;
           $page = $this->utf($page, $this->feed['html_encoding']);
       }
@@ -663,7 +681,7 @@ class TGrabberCore
               return null;
           }
       }
-      $this->content[$link]['text'] = $text_matches[1];
+      $this->content[$link]['text'] = $mPic . $text_matches[1];
 
       // И сразу сохраняем
       $this->beforeSaveLoop($link);
@@ -980,9 +998,7 @@ class TGrabberCore
     {
         $record =& $this->content[$url];
         $mod_status = WPGTools::getModStatus();
-        if ($mod_status == 1) {
-            file_put_contents(ABSPATH . 'INPUT_CONTENT.TXT', var_export($record, true)); //g
-        }
+
         // если определение анонса в ручную:
         if ($this->feed['params']['autoIntroOn'] == 1) {
             $this->introTexts[$url] = $this->userReplace('intro', $this->introTexts[$url]);
@@ -1078,12 +1094,18 @@ class TGrabberCore
         
         // Обработка изображений
         $this->_echo('<br /><b>Обработка изображений в тексте:</b><br>');
-        $this->introPicOn = 1;
+        //$this->introPicOn = 1;
 
         if ($this->feed['params']['meta_pic']) {
             $this->picToIntro = $this->imageProcessor($record['thumbnail']);
             $this->_echo('<br>META PIC: <div style="width: 20%;">' . $this->picToIntro . '</div>');
         }
+
+        /*
+        if($this->feed['params']['intopost']){
+            $record['text'] = $this->picToIntro .'<br>'. $record['text'];
+        }
+        */
         // g -- META picture
 
         if (!$this->testOn and $this->feed['params']['image_save']) $this->mkImageDir();
@@ -1102,6 +1124,11 @@ class TGrabberCore
           $this->_echo('<br /><i>Материал <strong>НЕ</strong> будет сохранен по причине отсутствия в нем контента</i>');
           return null;
         }
+
+        if ($mod_status == 1) {
+            file_put_contents(ABSPATH . 'INPUT_CONTENT.TXT', var_export($record, true)); //g
+        }
+
         return true;
     }
     

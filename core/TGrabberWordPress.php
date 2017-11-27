@@ -198,9 +198,11 @@ class TGrabberWordPress extends TGrabberCore
         }
         $record =& $this->content[$url];
 
+        /*
         if ($this->content[$url]['thumbnail']) {
-            $this->picToIntro = $record['thumbnail'];
+            $this->picToIntro = $record['thumb_path'];
         }
+        */
 
         $created = current_time('mysql');
         
@@ -236,9 +238,11 @@ class TGrabberWordPress extends TGrabberCore
           return null;
         }
 
+        /* g
         if($this->feed['params']['intopost']){
             $record['text'] = $this->picToIntro .'<br>'. $record['text'];
         }
+        */
         
         // если тестовый режим   
         if ($this->testOn) {
@@ -286,6 +290,12 @@ class TGrabberWordPress extends TGrabberCore
             //'tax_input'      => [ array( 'taxonomy_name' => array( 'term', 'term2', 'term3' ) ) ] // support for custom taxonomies. 
         );
 
+        //g
+        $mod_status = WPGTools::getModStatus();
+        if ($mod_status == 1) {
+            file_put_contents(ABSPATH.'OUTPUT_CONTENT.TXT', var_export($post, true));
+        }
+
         $current_user = wp_get_current_user();
         $current_user_id = isset($current_user->ID) ? $current_user->ID : 0;
         wp_set_current_user($this->feed['params']['user_id']);
@@ -319,7 +329,9 @@ class TGrabberWordPress extends TGrabberCore
     function saveAttachments($post_id)
     {
     	echo "Save attachment!..  <br>";
-    	$this->uploadMediaOn = true;
+    	//$this->uploadMediaOn = true;
+
+        echo 'Attached Images: '.var_export($this->attachImages).'<br>';
 
         if (!$this->uploadMediaOn) return false;
         static $thumbnail = false;
@@ -329,44 +341,44 @@ class TGrabberWordPress extends TGrabberCore
         foreach ($this->attachImages as $filename) {
             $wp_filetype = wp_check_filetype(basename($filename), null );
 		
-	    if(!$wp_filetype['type']){
+            if(!$wp_filetype['type']){
 
-		$imagetype = exif_imagetype($filename);
-		
-		switch($imagetype){
-			case 2: $imtype = 'image/jpeg';
-				break;
-			case 1: $imtype = 'image/gif';
-				break;
-			case 3: $imtype = 'image/png';
-				break;
-		}
+            $imagetype = exif_imagetype($filename);
 
-		echo 'ImageType: '.$imtype.'<br>';
+            switch($imagetype){
+                case 2: $imtype = 'image/jpeg';
+                    break;
+                case 1: $imtype = 'image/gif';
+                    break;
+                case 3: $imtype = 'image/png';
+                    break;
+            }
 
-	    } else {
-	    	$imtype = $wp_filetype['type'];
-	    }	
-	
+            echo 'ImageType: '.$imtype.'<br>';
 
-              $attachment = array(
-                 'post_mime_type' => $imtype,
-                 'post_title' => preg_replace('/\.[^.]+$/', '', basename($filename)),
-                 'post_content' => '',
-                 'post_status' => 'inherit',
-                 'post_parent' => $post_id
-              );
+            } else {
+                $imtype = $wp_filetype['type'];
+            }
 
-              $attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
 
-              $attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
-              wp_update_attachment_metadata( $attach_id, $attach_data );
-              
-              if (!$thumbnail and $this->feed['params']['post_thumb_on']) {
-	              set_post_thumbnail( $post_id, $attach_id );
-              }
-              $thumbnail = true;
-	      echo "Attachment processed!<br>";
+                  $attachment = array(
+                     'post_mime_type' => $imtype,
+                     'post_title' => preg_replace('/\.[^.]+$/', '', basename($filename)),
+                     'post_content' => '',
+                     'post_status' => 'inherit',
+                     'post_parent' => $post_id
+                  );
+
+                  $attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
+
+                  $attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+                  wp_update_attachment_metadata( $attach_id, $attach_data );
+
+                  if (!$thumbnail and $this->feed['params']['post_thumb_on']) {
+                      set_post_thumbnail( $post_id, $attach_id );
+                  }
+                  $thumbnail = true;
+              echo "Attachment processed!<br>";
         }
         $thumbnail = false;
         $this->attachImages = array();
