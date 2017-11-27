@@ -331,7 +331,10 @@ class TGrabberWordPress extends TGrabberCore
     	echo "Save attachment!..  <br>";
     	//$this->uploadMediaOn = true;
 
-        echo 'Attached Images: '.var_export($this->attachImages).'<br>';
+        $mod_status = WPGTools::getModStatus();
+        if ($mod_status == 1) {
+            echo 'Attached Images: <br>';
+        }
 
         if (!$this->uploadMediaOn) return false;
         static $thumbnail = false;
@@ -378,8 +381,12 @@ class TGrabberWordPress extends TGrabberCore
                       set_post_thumbnail( $post_id, $attach_id );
                   }
                   $thumbnail = true;
-              echo "Attachment processed!<br>";
+
+                if ($mod_status == 1) {
+                    echo '<img style="width: 150px; margin: .3%; border: 1px solid black; float: left;" src="'.wp_get_attachment_url($attach_id).'">';
+                }
         }
+        echo "<div class='clearfix'></div><span style='color: red;'>Attachment processed!</span><br>";
         $thumbnail = false;
         $this->attachImages = array();
         return true;

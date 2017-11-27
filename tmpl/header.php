@@ -116,7 +116,7 @@ if ( $option == 1) {
 } elseif($option == 0) {
     unlink(ABSPATH.'MATCHES.TXT');
     unlink(ABSPATH.'INPUT_CONTENT.TXT');
-    unlink(ABSPATH.'INPUT_CONTENT_2.TXT');
+    unlink(ABSPATH.'OUTPUT_CONTENT.TXT');
     unlink(ABSPATH.'PARAMS.TXT');
 }
 ?>
