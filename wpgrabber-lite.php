@@ -11,7 +11,7 @@ Author URI:
   if (defined('WPGRABBER_VERSION')) {
     die('На сайте активирован плагин WPGrabber версии '.WPGRABBER_VERSION.'. Пожалуйста, деактивируйте его перед активацией данного плагина.');
   }
-  define('WPGRABBER_VERSION', '3.2.1 #050');
+  define('WPGRABBER_VERSION', '3.2.1 #049');
 
   define('WPGRABBER_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
   define('WPGRABBER_PLUGIN_URL', plugin_dir_url( __FILE__ ));
